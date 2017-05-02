@@ -8,3 +8,7 @@ A basic follow up of the post [here](http://www.codebycodes.com/blog/2015/08/31/
 - `cd this_repo_path`
 - `irb -r /.bot.rb`
 - Follow instructions on terminal
+
+## Ruby Meetup Presentation
+
+This repo was presented on a [Ruby Bogota Meetup](https://www.meetup.com/bogota-ruby-meetup/events/238419826/), and its presentation is [here](https://docs.google.com/presentation/d/1byMtzygRcXNkL5eSfzvpdK0Tg0V-7Or8cV8-1KvSJGg/edit?usp=sharing).
