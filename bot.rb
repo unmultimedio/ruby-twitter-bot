@@ -75,26 +75,28 @@ def reply(query, options: {}, amount: 50, skip: true, one_per_query: true)
   puts "Replied #{replied} tweets."
 end
 
-def reply_book_loop(query, options: {})
+def book_loop(query: '#UnBuenLibroEnRubyBogota', options: {})
   return if query.empty?
-  replied_tweets = []
-  total_replied = 0
+  found_tweets = []
+  total_found = 0
   loop do
-    replied = 0
-    puts "#{Time.new}: Started replying..."
+    found = 0
+    puts "#{Time.new}: Searching..."
     tweets = search(query, options: options)
     tweets.each do |tweet|
-      next if replied_tweets.include?(tweet.id)
+      next if found_tweets.include?(tweet.id)
+      @client.favorite(tweet)
+      @client.retweet(tweet)
       @client.update("@#{tweet.user.screen_name} \"#{random_book}\" @BogotaRuby #RubyDev #Filbo2017",
                      in_reply_to_status_id: tweet.id)
-      replied_tweets << tweet.id
-      replied += 1
-      puts "Replied(@#{tweet.user.screen_name}): #{tweet.text}"
+      found_tweets << tweet.id
+      found += 1
+      puts "(@#{tweet.user.screen_name}): #{tweet.text}"
     end
-    total_replied += replied
-    puts "New #{replied} replies, out of #{total_replied} total replies."
+    total_found += found
+    puts "New #{found} tweets, out of #{total_found} total found."
     puts 'Sleeping...'
-    sleep(5) # Wait for 5 seconds until replying again
+    sleep(60) # Wait before next cycle
   end
 end
 
@@ -108,10 +110,13 @@ end
 def random_book
   [
     'Business Model Generation (Alexander Osterwalder)',
+    'Breve historia de mi vida (Stephen Hawking)',
     'Digital Wars (Charles Arthur)',
     'El diario de Anna Frank',
+    'El exorcista (William Peter Blatty)',
     'Elon Musk: Tesla, SpaceX, and the Quest for a Fantastic Future (Ashlee Vance)',
     'Getting Real (37signals)',
+    'Historia del Tiempo (Stephen Hawking)',
     'How to win friends and influence people (Dale Carnegie)',
     'Las cuatro vidas de Steve Jobs (Daniel Ichbiah)',
     'Los Innovadores (Walter Isaacson)',
@@ -122,6 +127,7 @@ def random_book
     'The Founder\'s Dilemmas (Noam Wasserman)',
     'The Great Design (Stephen Hawking, Leonard Mlodinow)',
     'The Lean Startup (Eric Ries)',
+    'Travesuras de una niña mala (Mario Vargas Llosa)',
     'Zero to One (Peter Thiel)'
   ].sample
 end
